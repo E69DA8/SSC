@@ -1,0 +1,90 @@
+//
+//  PrefixHeader.pch
+//  SCC
+//
+//  Created by E69DA8 on 2018/10/23.
+//  Copyright © 2018年 E69DA8. All rights reserved.
+//
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+#ifdef __OBJC__
+
+//头文件
+//#import "UMessage.h"
+#import <UMSocialCore/UMSocialCore.h>
+#import <WXApi.h>
+#import "SCCBaseNavigationController.h"
+#import "Masonry.h"
+#import <YYModel.h>
+#import "SCCditions.h"
+#import <MJRefresh.h>
+#import "SCCNetworkTool.h"
+#import <SVProgressHUD.h>
+#import <UIImageView+WebCache.h>
+#import "JYHLSVProgressHUD.h"
+#import <UMCommon/UMCommon.h>
+#import <UMAnalytics/MobClick.h>
+
+//颜色
+#define SCCColor(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+#define SCCRGBColor(rgbValue, a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
+
+#define SCCBgColor [UIColor r_colorWithHex:0xf9f9f9]//背景颜色
+
+#define SCCWidth(widthValue)   (widthValue / 375.00) * [UIScreen mainScreen].bounds.size.width
+
+// 是否是 iPhoneX
+#define isIPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? [[UIScreen mainScreen] currentMode].size.height == 2436 : NO)
+
+//顶部状态栏高度
+#define TopStatusHeight isIPhoneX ? 44.0 : 20.0
+
+//状态栏加导航栏高度
+#define NavStatusHeight isIPhoneX ? 88.0 : 64.0
+
+#define  ScreenWidth   [UIScreen mainScreen].bounds.size.width
+
+
+
+/// 存储设备唯一代码
+#define JYHLSaveDeviceIdKey @"SCCSaveDeviceIdKey"
+
+#define JYZBBaseURLStr [[NSUserDefaults standardUserDefaults] objectForKey:JYHLBASEURLSTRKEY]
+
+/// 存储 token
+#define JYHLSaveTokenKey @"jyhltoken"
+
+//id,名字，密码
+#define  SCCUserID @"SaveUserID"
+#define  SCCUserName @"SaveUserName"
+#define  SCCUserPassword @"SaveUserPassword"
+
+#define SCCBASEURL @"http://www.lookroe.com/gpj/"
+//#define SCCBASEURL @"http://192.168.0.111:8081/shares_app/"
+
+/// 友盟
+#define UMengSDK_AppId @"5c037890f1f5561579000dcf"
+
+
+
+//微信分享ID
+#define SCCWeChat @"wxddbc4d464b64dcc0"
+
+
+/**
+ * 调试的宏
+ */
+#ifdef DEBUG // 测试!
+#define NSLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define NSLog(...) // 打印信息也是非常耗性能!
+#endif
+
+
+
+#endif
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
