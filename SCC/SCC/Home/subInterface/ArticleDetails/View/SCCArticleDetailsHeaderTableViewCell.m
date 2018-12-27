@@ -31,6 +31,7 @@
 #pragma mark - UI
 - (void)setupUI {
     
+//    self.contentView.backgroundColor = [UIColor redColor];
     
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(self.contentView).offset(SCCWidth(20));

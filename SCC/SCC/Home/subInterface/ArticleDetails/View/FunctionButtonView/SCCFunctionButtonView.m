@@ -58,18 +58,22 @@
 //
 //    [self addSubview:visualEffectView];
     
+//    self.backgroundColor = [UIColor redColor];
+    
+//    self.bgView.backgroundColor = [UIColor redColor];
+    
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
     
     
-    UIImageView *imageView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"user_2"]];
+//    UIImageView *imageView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"user_2"]];
+//
+//    [self addSubview:imageView];
     
-    [self addSubview:imageView];
-    
-    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
-    }];
+//    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self);
+//    }];
     
 //    //iOS 8.0
 //    * * 模糊效果的三种风格
@@ -90,9 +94,10 @@
         make.edges.equalTo(self);
     }];
  
-    imageView.alpha = 0;
+//    imageView.alpha = 0;
     
-    self.backgroundColor = SCCRGBColor(0xeaeaec, 0);
+//    self.backgroundColor = SCCRGBColor(0xeaeaec, 0);
+//    self.backgroundColor = [UIColor greenColor];
     self.layer.cornerRadius = 12;
     self.layer.masksToBounds = YES;
 //    [self.fabulousImageView mas_makeConstraints:^(MASConstraintMaker *make) {

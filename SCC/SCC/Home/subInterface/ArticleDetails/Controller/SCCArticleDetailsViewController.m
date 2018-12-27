@@ -121,10 +121,10 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     
     self.tableView.frame = CGRectMake(0,TopStatusHeight, self.view.bounds.size.width, self.view.bounds.size.height);
     
-    self.view.backgroundColor = [UIColor whiteColor];
+//    self.view.backgroundColor = [UIColor whiteColor];
     
     [self.functionButtonView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(SCCWidth(-28));
+        make.bottom.equalTo(self.view).offset(SCCWidth(-10));
         make.centerX.equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(SCCWidth(355), SCCWidth(64)));
     }];
@@ -147,6 +147,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     UIView *separateView = [[UIView alloc]initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height  , [UIScreen mainScreen].bounds.size.width, 0.5)];
     
     separateView.backgroundColor = SCCColor(0xebebeb);
+//    separateView.backgroundColor = [UIColor blueColor];
     
     [self.view addSubview:separateView];
     
@@ -426,7 +427,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     
     UIView *view = [[UIView alloc]init];
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = SCCRGBColor(0x000000, 0);
     
 //    UILabel *lab = [UILabel r_labelWithText:_hintStr fontSize:11 color:[UIColor r_colorWithHex:0x666666]];
 //    //    lab.font = [UIFont boldSystemFontOfSize:11];
@@ -601,6 +602,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 - (SCCFunctionButtonView *)functionButtonView{
     if(!_functionButtonView){
         SCCFunctionButtonView *view = [[SCCFunctionButtonView alloc]init];
+        
+//        view.backgroundColor = [UIColor redColor];
         
         __weak typeof(self)weakSelf = self;
         [view setFunctionButtonClickBlock:^(NSInteger type) {

@@ -60,7 +60,8 @@
 #define  SCCUserName @"SaveUserName"
 #define  SCCUserPassword @"SaveUserPassword"
 
-#define SCCBASEURL @"http://www.lookroe.com/gpj/"
+#define SCCBASEURL @"https://app.luckline.cn/shares_app/"
+//#define SCCBASEURL @"http://www.lookroe.com/gpj/"
 //#define SCCBASEURL @"http://192.168.0.105:8081/shares_app/"
 
 /// 友盟
