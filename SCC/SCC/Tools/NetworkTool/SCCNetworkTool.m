@@ -308,7 +308,7 @@ static NSMutableDictionary *articleDict;
     
     //    NSString *deviceId = [SSKeychain passwordForService:[NSBundle mainBundle].bundleIdentifier account:JYHLSaveDeviceIdKey];
     
-    NSString *urlStr = [NSString stringWithFormat:@"%@yxbApp/likeArticle.do",SCCBASEURL];
+    NSString *urlStr = [NSString stringWithFormat:@"%@yxbApp/unAndThumbsUpArticle.do",SCCBASEURL];
     
     [self requestWithType:POST urlStr:urlStr parameters:param callBack:callBack];
 }

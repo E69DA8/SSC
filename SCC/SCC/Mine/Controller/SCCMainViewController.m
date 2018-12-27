@@ -63,7 +63,7 @@ static NSString *CellID = @"SCCMainTableViewCellID";
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID] integerValue] < 1) {
-        self.userIconImageVeiw.image = [UIImage imageNamed:@"user_2"];
+        self.userIconImageVeiw.image = [UIImage imageNamed:@"logo_portrait_not_login"];
         self.userNameLabel.text = @"未登录";
         self.signOutView.hidden = YES;
     }else{
@@ -365,7 +365,7 @@ static NSString *CellID = @"SCCMainTableViewCellID";
             [[NSUserDefaults standardUserDefaults] setObject:@"-1" forKey:SCCUserID];
             [JYHLSVProgressHUD showWithMsg:@"退出登录"];
             self.userNameLabel.text = @"未登录";
-            self.userIconImageVeiw.image = [UIImage imageNamed:@"user_2"];
+            self.userIconImageVeiw.image = [UIImage imageNamed:@"logo_portrait_not_login"];
             self.signOutView.hidden = YES;
         }
             

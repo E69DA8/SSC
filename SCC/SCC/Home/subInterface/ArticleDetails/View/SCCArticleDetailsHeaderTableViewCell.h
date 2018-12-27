@@ -12,4 +12,5 @@
 @property(nonatomic,copy) SCCHomeViewModel *model;
 @property(nonatomic,copy) void (^followButtonBlock)(void);
 @property(nonatomic,copy) NSString *iconPath;
+@property(nonatomic,assign) BOOL isFollow;//是否关注
 @end

@@ -61,7 +61,7 @@
 #define  SCCUserPassword @"SaveUserPassword"
 
 #define SCCBASEURL @"http://www.lookroe.com/gpj/"
-//#define SCCBASEURL @"http://192.168.0.111:8081/shares_app/"
+//#define SCCBASEURL @"http://192.168.0.105:8081/shares_app/"
 
 /// 友盟
 #define UMengSDK_AppId @"5c037890f1f5561579000dcf"

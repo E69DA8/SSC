@@ -13,4 +13,6 @@
 @property (strong, nonatomic) NSIndexPath *selectIndexPath;
 @property(nonatomic,copy) NSString *articleId;
 @property(nonatomic,copy) NSString *iconPath;
+@property(nonatomic,assign) BOOL isThumbsUp;//是否点赞
+@property(nonatomic,assign) BOOL isFollow;//是否关注
 @end

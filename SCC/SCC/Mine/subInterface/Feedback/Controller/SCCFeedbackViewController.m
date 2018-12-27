@@ -60,6 +60,8 @@
         make.right.equalTo(self.view).offset(SCCWidth(-20));
         make.bottom.equalTo(self.view);
     }];
+    
+    [self.feedbackTxt becomeFirstResponder];
 }
 
 - (UITextView *)feedbackTxt{

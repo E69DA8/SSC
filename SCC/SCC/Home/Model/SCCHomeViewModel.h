@@ -21,5 +21,6 @@
 @property(nonatomic,copy) NSString *discuss_like_mount;//评论数
 @property(nonatomic,copy) NSString *article_like_amount;//点赞数
 @property(nonatomic,copy) NSString *forwarding_num;//转发数
+@property(nonatomic,assign) BOOL isThumbsUp;
 
 @end

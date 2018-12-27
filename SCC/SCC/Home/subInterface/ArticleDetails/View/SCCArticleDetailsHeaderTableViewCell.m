@@ -130,8 +130,14 @@
 
     self.timeLabel.text = model.article_pub_time;
     
+    
+    
+}
+
+-(void)setIsFollow:(BOOL)isFollow{
+    _isFollow = isFollow;
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID] integerValue] > 0) {
-        if (model.is_follow) {
+        if (isFollow) {
             [self.followButton setImage:[UIImage imageNamed:@"btn_already_follow"] forState:UIControlStateNormal];
             //        self.followButton.hidden = YES;
         }else{
@@ -141,9 +147,6 @@
     }else{
         [self.followButton setImage:[UIImage imageNamed:@"btn_follow"] forState:UIControlStateNormal];
     }
-    
-    
-    
     
 }
 
@@ -226,7 +229,7 @@
 }
 - (UILabel *)commentTitleLabel{
     if(!_commentTitleLabel){
-        UILabel *lab = [UILabel r_labelWithText:nil fontSize:20 color:SCCColor(0x333333)];
+        UILabel *lab = [UILabel r_labelWithText:@"评论" fontSize:20 color:SCCColor(0x333333)];
         lab.font = [UIFont boldSystemFontOfSize:20];
         [self.contentView addSubview:lab];
         _commentTitleLabel = lab;

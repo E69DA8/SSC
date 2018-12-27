@@ -13,4 +13,5 @@
 @property(nonatomic,copy) NSString *fabulousStr;//点赞数
 @property(nonatomic,copy) NSString *retransmissStr;//转发数
 @property(nonatomic,copy) NSString *CommentStr;//评论数
+@property(nonatomic,assign) BOOL isThumbsUp;//是否点赞
 @end

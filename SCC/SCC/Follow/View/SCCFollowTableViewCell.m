@@ -69,6 +69,9 @@
 }
 
 -(void)followButtonClick{
+    
+    [self.followButton setImage:[UIImage imageNamed:@"btn_already_follow"] forState:UIControlStateNormal];
+    
     if (self.followButtonClickBlock) {
         self.followButtonClickBlock();
     }

@@ -21,6 +21,7 @@
 
 static NSString *headerCellID = @"SCCArticleDetailsHeaderTableViewCellID";
 static NSString *CellID = @"SCCMyCommentTableViewCellID";
+
 @interface SCCArticleDetailsViewController ()<UITableViewDelegate,UITableViewDataSource,LMJKeyboardShowHiddenNotificationCenterDelegate,UITextFieldDelegate>
 
 @property(weak,nonatomic) UITableView *tableView;//tableView
@@ -37,7 +38,6 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 
 @property(weak,nonatomic)UIView *separateView;//分割线
 
-
 @end
 
 @implementation SCCArticleDetailsViewController{
@@ -49,6 +49,9 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     NSArray<SCCHomeViewModel *> *_listModelArr;
     NSArray<SCCArticleCommentModel *>* _commentModelArr;
     NSString *_commentIconPath;
+    NSInteger _page;
+//    BOOL _isFabulous;
+    NSInteger _refreshType;
 }
 
 
@@ -100,6 +103,11 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 
 - (void)setupUI{
     
+//    _isFabulous = self.isThumbsUp;
+    
+    _page = 1;
+    _refreshType = 1;
+    
     [self loadCommentData];
     
     [MobClick event:@"article_details"];
@@ -116,7 +124,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.functionButtonView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(SCCWidth(-10));
+        make.bottom.equalTo(self.view).offset(SCCWidth(-28));
         make.centerX.equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(SCCWidth(355), SCCWidth(64)));
     }];
@@ -144,7 +152,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     
     self.separateView = separateView;
     
-    
+//    self.functionButtonView.backgroundColor = [UIColor redColor];
     
     self.commentTextField.backgroundColor = SCCColor(0xe4e4e5);
     self.sendButton.backgroundColor = [UIColor whiteColor];
@@ -180,6 +188,10 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
             self.functionButtonView.retransmissStr = _listModelArr[0].forwarding_num;
             self.functionButtonView.CommentStr = _listModelArr[0].discuss_like_mount;
             
+            if (_refreshType == 1) {
+             self.functionButtonView.isThumbsUp = self.isThumbsUp;
+            }
+            
             [self.tableView reloadData];
             
         }else{
@@ -193,7 +205,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     
     NSDictionary *param = @{
                             @"userId" : @"-1",
-                            @"articleId" :self.articleId
+                            @"articleId" :self.articleId,
+                            @"pageNum" : @"1"
                             };
     
     [[SCCNetworkTool sharedNetworkTool] requestCommentListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
@@ -206,6 +219,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
             
             NSDictionary *dictData = dict[@"result"];
             
+            
+            
             _commentModelArr = [NSArray yy_modelArrayWithClass:[SCCArticleCommentModel class] json:dictData[@"discussList"]];
             
             _commentIconPath = dictData[@"path"];
@@ -217,6 +232,48 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         }
     }];
 }
+
+/**
+ *  上拉加载数据
+ */
+- (void)loadMoreData:(MJRefreshFooter *)footer{
+    
+    NSDictionary *param = @{
+                            @"userId" : @"-1",
+                            @"articleId" :self.articleId,
+                            @"pageNum" : [NSString stringWithFormat:@"%zd",_page + 1]
+                            };
+    
+    [[SCCNetworkTool sharedNetworkTool] requestCommentListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
+        if (error) {
+            [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
+            return ;
+        }
+        
+        if ([dict[@"state"] isEqualToString:@"success"]) {
+            
+            NSDictionary *dictData = dict[@"result"];
+            
+            _page  = _page + 1;
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            
+            [arrM addObjectsFromArray:_commentModelArr];
+            NSArray *newModelArr = [NSArray yy_modelArrayWithClass:[SCCArticleCommentModel class] json:dictData[@"discussList"]];
+            _commentModelArr = [arrM arrayByAddingObjectsFromArray:newModelArr];
+            
+            [self.tableView reloadData];
+            [footer endRefreshing];
+        }else{
+            [footer endRefreshingWithNoMoreData];
+        }
+        
+        
+    }];
+    
+}
+
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -234,6 +291,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     if (indexPath.row == 0) {
         SCCArticleDetailsHeaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:headerCellID forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.isFollow = self.isFollow;
         __weak typeof(self)weakSelf = self;
         [cell setFollowButtonBlock:^{
             __strong typeof(self)strongSelf = weakSelf;
@@ -243,7 +301,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                     NSDictionary *param = @{
                                             @"authorId" : _listModelArr[indexPath.row].autherId,
                                             @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
-                                            @"remark": _listModelArr[indexPath.row].is_follow == 1 ? @"0" : @"1"
+                                            @"remark": @(!self.isFollow)
                                             };
                     
                     [[SCCNetworkTool sharedNetworkTool] requestFollowWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
@@ -263,6 +321,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                             //                        [self.tableView reloadData];
                             
 //                            [JYHLSVProgressHUD showWithMsg:@"关注成功"];
+                            self.isFollow = !self.isFollow;
+                            _refreshType = 2;
                             [self loadData];
                             
                         }else{
@@ -294,8 +354,11 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         [cell setCommentThumbsUpButtonClickBlock:^{
             __strong typeof(self)strongSelf = weakSelf;
             if (strongSelf) {
+                if ([[[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID] integerValue] > 0) {
                 NSDictionary *param = @{
-                                        @"discussId" : _commentModelArr[indexPath.row - 1].discuss_id
+                                        @"discussId" : _commentModelArr[indexPath.row - 1].discuss_id,
+                                        @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
+                                        @"remark" : @(!_commentModelArr[indexPath.row - 1].isThumbsUp)
                                         };
                 
                 [[SCCNetworkTool sharedNetworkTool] requestCommentThumbsUpWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
@@ -322,9 +385,18 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                         [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
                     }
                 }];
+                
+                }else{
+                    SCCLoginViewController *view = [[SCCLoginViewController alloc]init];
+                    [self presentViewController:view animated:YES completion:nil];
+                }
+                
+                
             }
             
-        }];
+            }];
+            
+        
         
         return cell;
     }
@@ -402,11 +474,18 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
             //
             //                        [self.tableView reloadData];
             
+            _listModelArr[0].discuss_like_mount = [NSString stringWithFormat:@"%zd",[_listModelArr[0].discuss_like_mount integerValue] + 1];
+            
+            self.functionButtonView.CommentStr = _listModelArr[0].discuss_like_mount;
+            
+            
+            
             [JYHLSVProgressHUD showWithMsg:@"评论成功"];
+            
             
             [self loadCommentData];
             
-            NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:_commentModelArr.count inSection:0];
+            NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:_commentModelArr.count > 0 ? 1 : 0 inSection:0];
             [self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             
         }else{
@@ -500,6 +579,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         
         [tableView registerClass:[SCCArticleDetailsHeaderTableViewCell class] forCellReuseIdentifier:headerCellID];
         
+        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = SCCWidth(79);
 
@@ -533,7 +614,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                     
                     NSDictionary *param = @{
                                             @"articleId" : _listModelArr[0].articleId,
-                                            @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID]
+                                            @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
+                                            @"remark" : @(!self.isThumbsUp)
                                             };
                     [[SCCNetworkTool sharedNetworkTool]requestThumbsUpWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
                         
@@ -552,8 +634,9 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                             //
                             //                        [self.tableView reloadData];
                             
-                            [JYHLSVProgressHUD showWithMsg:@"点赞成功"];
-                            
+//                            [JYHLSVProgressHUD showWithMsg:@"点赞成功"];
+                            self.isThumbsUp = !self.isThumbsUp;
+                            _refreshType = 1;
                             [self loadData];
                             
                         }else{

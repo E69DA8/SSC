@@ -169,9 +169,15 @@
     }];
 }
 
+-(void)setIsThumbsUp:(BOOL)isThumbsUp{
+    _isThumbsUp = isThumbsUp;
+    self.fabulousButton.selected = isThumbsUp;
+}
+
 -(void)setFabulousStr:(NSString *)fabulousStr{
     _fabulousStr = fabulousStr;
 //    self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_like"];
+    self.fabulousButton.hidden = NO;
     self.fabulousLabel.text = fabulousStr;
 }
 -(void)setRetransmissStr:(NSString *)retransmissStr{
@@ -192,7 +198,7 @@
     
 //    self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_sel_like"];
     
-    btn.selected = !btn.selected;
+//    btn.selected = !btn.selected;
     
     if (self.functionButtonClickBlock) {
         self.functionButtonClickBlock(btn.tag);
@@ -237,6 +243,7 @@
 - (UILabel *)fabulousLabel{
     if(!_fabulousLabel){
         UILabel *lab = [UILabel r_labelWithText:nil fontSize:12 color:SCCColor(0x333333)];
+        lab.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
         [self addSubview:lab];
         _fabulousLabel = lab;
     }
@@ -246,6 +253,7 @@
 - (UILabel *)retransmissionLabel{
     if(!_retransmissionLabel){
         UILabel *lab = [UILabel r_labelWithText:nil fontSize:12 color:SCCColor(0x333333)];
+        lab.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
         [self addSubview:lab];
         _retransmissionLabel = lab;
     }
@@ -255,6 +263,7 @@
 - (UILabel *)lookCommentLabel{
     if(!_lookCommentLabel){
         UILabel *lab = [UILabel r_labelWithText:nil fontSize:12 color:SCCColor(0x333333)];
+        lab.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
         [self addSubview:lab];
         _lookCommentLabel = lab;
     }
@@ -264,6 +273,7 @@
 - (UILabel *)sendCommentLabel{
     if(!_sendCommentLabel){
         UILabel *lab = [UILabel r_labelWithText:nil fontSize:12 color:SCCColor(0x333333)];
+        lab.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
         [self addSubview:lab];
         _sendCommentLabel = lab;
     }
@@ -280,6 +290,7 @@
         btn.favoredColor = [UIColor redColor];
         btn.circleColor = [UIColor yellowColor];
         btn.userInteractionEnabled = YES;
+        btn.hidden = YES;
         [btn addTarget:self action:@selector(functionButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.fabulousBgView addSubview:btn];
         _fabulousButton = btn;

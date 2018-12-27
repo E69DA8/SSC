@@ -33,6 +33,7 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
     NSArray<SCCHomeViewModel *> *_followListModelArr;
     NSString *_iconPatn;//头像前缀
     NSInteger _type ;//1:有关注，2：没有关注
+    NSInteger _page;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -41,6 +42,8 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
 }
 
 - (void)setupFoloowUI{
+    
+    _page = 1;
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
@@ -55,6 +58,10 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
     self.view.backgroundColor = SCCBgColor;
     
     self.headerView.titleStr = @"关注";
+    
+    if (_type == 1) {
+        self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+    }
 }
 
 -(void)loadIsFollowData{
@@ -83,7 +90,7 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
                 }
                 
                 if (_type == 1) {
-                    self.tableView.rowHeight = SCCWidth(280);
+                    self.tableView.rowHeight = SCCWidth(300);
                 }else if (_type == 2){
                     self.tableView.rowHeight = SCCWidth(79);
                 }
@@ -108,7 +115,8 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
 
 -(void)loadData{
     NSDictionary *param = @{
-                            @"userId": [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID]
+                            @"userId": [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
+                            @"pageNum" : @"1"
                             };
     
     [[SCCNetworkTool sharedNetworkTool] requestFollowListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
@@ -133,6 +141,50 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
         }
         
     }];
+}
+
+/**
+ *  上拉加载数据
+ */
+- (void)loadMoreData:(MJRefreshFooter *)footer{
+    
+    if (_type == 2) {
+        return;
+    }
+    
+    NSDictionary *param = @{
+                            @"userId": [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
+                            @"pageNum" : [NSString stringWithFormat:@"%zd",_page + 1]
+                            };
+    
+    [[SCCNetworkTool sharedNetworkTool] requestFollowListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
+        
+        if (error) {
+            [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
+            return ;
+        }
+        
+        if ([dict[@"state"] isEqualToString:@"success"]) {
+            
+            NSDictionary *dictData = dict[@"result"];
+            
+            _page  = _page + 1;
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            
+            [arrM addObjectsFromArray:_followListModelArr];
+            NSArray *newModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"followList"]];
+            _followListModelArr = [arrM arrayByAddingObjectsFromArray:newModelArr];
+            
+            [self.tableView reloadData];
+            [footer endRefreshing];
+        }else{
+            [footer endRefreshingWithNoMoreData];
+        }
+        
+        
+    }];
+    
 }
 
 
@@ -280,11 +332,11 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
                             
 //                            [JYHLSVProgressHUD showWithMsg:@"关注成功"];
                             
-                            if (_listModelArr.count > 1) {
-                                [self loadNoData];
-                            }else{
-                                [self loadIsFollowData];
-                            }
+                            
+                            [strongSelf performSelector:@selector(followAnimation) withObject:nil afterDelay:1];
+                        
+                            
+                            
                             
                             
                             
@@ -310,6 +362,26 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
     
     
 }
+
+-(void)followAnimation{
+    if (_listModelArr.count > 1) {
+        [self loadNoData];
+    }else{
+        [self loadIsFollowData];
+    }
+}
+
+
+///**
+// *  延迟执行
+// *
+// *  @param aSelector  方法名称
+// *  @param anArgument  要传递的参数，如果无参数，就设为nil
+// *  @param delay  延迟的时间
+// */
+//- (void)performSelector:(SEL)aSelector withObject:(nullable id)anArgument afterDelay:(NSTimeInterval)delay{
+//
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -340,8 +412,7 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
         [tableView registerClass:[SCCFollowTableViewCell class] forCellReuseIdentifier:CellID];
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID2];
         
-        
-        tableView.rowHeight = SCCWidth(280);
+        tableView.rowHeight = SCCWidth(300);
             
         //
         SCCHomeHeaderView *view = [[SCCHomeHeaderView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SCCWidth(77))];

@@ -25,6 +25,7 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
     NSIndexPath *selectIndexPath;
     NSArray<SCCHomeViewModel *> *_listModelArr;
     NSString *_iconPatn;
+    NSInteger _page;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -43,6 +44,7 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 
 -(void)setupUI{
     
+    _page = 1;
     
 //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
@@ -72,7 +74,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
     }
     
     NSDictionary *param = @{
-                            @"userId" : paramStr
+                            @"userId" : paramStr,
+                            @"pageNum" : @"1"
                             };
     
     [[SCCNetworkTool sharedNetworkTool] requestArticleListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
@@ -95,6 +98,56 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
         }else{
             [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
         }
+        
+    }];
+    
+}
+
+/**
+ *  上拉加载数据
+ */
+- (void)loadMoreData:(MJRefreshFooter *)footer{
+    
+    NSString *paramStr;
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID] integerValue] > 0) {
+        paramStr = [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID];
+    }else{
+        paramStr = @"-1";
+    }
+    
+    NSDictionary *param = @{
+                            @"userId" : paramStr,
+                            @"pageNum" : [NSString stringWithFormat:@"%zd",_page + 1]
+                            };
+    
+    [[SCCNetworkTool sharedNetworkTool] requestArticleListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
+        
+        if (error) {
+            [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
+            return ;
+        }
+
+        
+        
+        if ([dict[@"state"] isEqualToString:@"success"]) {
+            
+            NSDictionary *dictData = dict[@"result"];
+            
+            _page  = _page + 1;
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            
+            [arrM addObjectsFromArray:_listModelArr];
+            NSArray *newModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"bannerList"]];
+            _listModelArr = [arrM arrayByAddingObjectsFromArray:newModelArr];
+            
+            [self.tableView reloadData];
+            [footer endRefreshing];
+        }else{
+            [footer endRefreshingWithNoMoreData];
+        }
+        
         
     }];
     
@@ -133,6 +186,7 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
             if (type == 2) {
                 SCCAuthorInterfaceViewController *view = [[SCCAuthorInterfaceViewController alloc]init];
                 view.autherId = _listModelArr[indexPath.row].autherId;
+                view.isThumbsUp = _listModelArr[indexPath.row].isThumbsUp;
                 [strongSelf.navigationController pushViewController:view animated:YES];
             }else if (type == 1){
                 
@@ -199,6 +253,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 //    detail.imageName = self.dataSource[indexPath.row];
     detail.iconPath = _iconPatn;
     detail.articleId = _listModelArr[indexPath.row].articleId;
+    detail.isThumbsUp = _listModelArr[indexPath.row].isThumbsUp;
+    detail.isFollow = _listModelArr[indexPath.row].is_follow;
     [self presentViewController:detail animated:YES completion:nil];
     
     
@@ -219,8 +275,9 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
         self.edgesForExtendedLayout = UIRectEdgeNone;//这个也很重要，不然view会被导航栏遮住的
         //注册cell
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID];
+        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
 
-        tableView.rowHeight = SCCWidth(280);
+        tableView.rowHeight = SCCWidth(300);
         //
         SCCHomeHeaderView *view = [[SCCHomeHeaderView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SCCWidth(77))];
         tableView.tableHeaderView = view;

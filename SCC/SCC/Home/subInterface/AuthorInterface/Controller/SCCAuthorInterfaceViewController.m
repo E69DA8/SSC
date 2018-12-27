@@ -29,6 +29,7 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
 @implementation SCCAuthorInterfaceViewController{
     NSArray<SCCHomeViewModel *>*_listModelArr;
     NSString *_iconPatn;
+    NSInteger _page;
 }
 
 //-(void)viewWillAppear:(BOOL)animated{
@@ -37,6 +38,8 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
 //}
 
 -(void)setupUI{
+    
+    _page = 1;
     
     [self loadData];
     
@@ -132,7 +135,7 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
             NSDictionary *param = @{
                                     @"authorId" : self.autherId,
                                     @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
-                                    @"remark": _listModelArr[0].is_follow == 1 ? @"0" : @"1"
+                                    @"remark": @(!self.isThumbsUp)
                                     };
             [[SCCNetworkTool sharedNetworkTool] requestFollowWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
                 if (error) {
@@ -151,6 +154,8 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
                     //                        [self.tableView reloadData];
                     
 //                    [JYHLSVProgressHUD showWithMsg:@"关注成功"];
+                    
+                    self.isThumbsUp = !self.isThumbsUp;
                     
                     [self loadData];
                     
@@ -171,7 +176,8 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
 - (void)loadData{
     
     NSDictionary *param = @{
-                            @"autherId" : self.autherId
+                            @"autherId" : self.autherId,
+                            @"pageNum" : @"1"
                             };
     
     [[SCCNetworkTool sharedNetworkTool] requestUserArticleListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
@@ -194,9 +200,9 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
             
             self.headerView.iconPatn = _iconPatn;
             self.headerView.model = _listModelArr[0];
-            self.headerView.isFollow = _listModelArr[0].is_follow;
+            self.headerView.isFollow = self.isThumbsUp;
             
-            if (_listModelArr[0].is_follow) {
+            if (self.isThumbsUp) {
                 [self.followButton setImage:[UIImage imageNamed:@"btn_already_follow"] forState:UIControlStateNormal];
             }else{
                 [self.followButton setImage:[UIImage imageNamed:@"btn_follow"] forState:UIControlStateNormal];
@@ -209,6 +215,46 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
         }
         
     }];
+}
+
+/**
+ *  上拉加载数据
+ */
+- (void)loadMoreData:(MJRefreshFooter *)footer{
+    
+    NSDictionary *param = @{
+                            @"autherId" : self.autherId,
+                            @"pageNum" : [NSString stringWithFormat:@"%zd",_page + 1]
+                            };
+    
+    [[SCCNetworkTool sharedNetworkTool] requestUserArticleListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
+        
+        if (error) {
+            [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
+            return ;
+        }
+        
+        if ([dict[@"state"] isEqualToString:@"success"]) {
+            
+            NSDictionary *dictData = dict[@"result"];
+            
+            _page  = _page + 1;
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            
+            [arrM addObjectsFromArray:_listModelArr];
+            NSArray *newModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"autherArticleList"]];
+            _listModelArr = [arrM arrayByAddingObjectsFromArray:newModelArr];
+            
+            [self.tableView reloadData];
+            [footer endRefreshing];
+        }else{
+            [footer endRefreshingWithNoMoreData];
+        }
+        
+        
+    }];
+    
 }
 
 
@@ -267,8 +313,10 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
         self.edgesForExtendedLayout = UIRectEdgeNone;//这个也很重要，不然view会被导航栏遮住的
         //注册cell
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID];
+        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
         
-        tableView.rowHeight = SCCWidth(280);
+        
+        tableView.rowHeight = SCCWidth(300);
         //
         SCCAuthorInterfaceHeaderView *view = [[SCCAuthorInterfaceHeaderView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, SCCWidth(130))];
         __weak typeof(self)weakSelf = self;

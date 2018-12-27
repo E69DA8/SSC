@@ -100,8 +100,14 @@
     self.userNameLabel.text = model.userName;
 //    self.userNameLabel.backgroundColor = [UIColor redColor];
     self.timeLabel.text = [NSString stringWithFormat:@"%@",model.createTime];
-    self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_discuss"];
-    self.fabulousLabel.text = model.discuss_like;
+    
+    if (model.isThumbsUp) {
+        self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_sel_discuss"];
+    }else{
+        self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_discuss"];
+    }
+    
+    self.fabulousLabel.text = model.thumbsUpAmount;
     self.articleTextLabel.text = [model.discuss_content stringByReplacingOccurrencesOfString:@" " withString:@""];
 //    NSLog(@"分%@分",model.discuss_content);
 //    self.articleTextLabel.backgroundColor = [UIColor greenColor];

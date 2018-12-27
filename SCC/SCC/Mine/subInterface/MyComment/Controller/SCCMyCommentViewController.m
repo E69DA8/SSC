@@ -21,9 +21,12 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 @implementation SCCMyCommentViewController{
     NSString *_commentIconPath;
     NSArray<SCCArticleCommentModel*> *_commentModelArr;
+    NSInteger _page;
 }
 
 - (void)setupUI{
+    
+    _page = 1;
     
     self.tableView.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height);
     
@@ -43,7 +46,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 -(void)loadData{
     NSDictionary *param = @{
                             @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
-                            @"articleId" :@"_1"
+                            @"articleId" :@"-1",
+                            @"pageNum" : @"1"
                             };
     
     [[SCCNetworkTool sharedNetworkTool] requestCommentListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
@@ -68,6 +72,46 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     }];
 }
 
+/**
+ *  上拉加载数据
+ */
+- (void)loadMoreData:(MJRefreshFooter *)footer{
+    
+    NSDictionary *param = @{
+                            @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
+                            @"articleId" :@"-1",
+                            @"pageNum" : [NSString stringWithFormat:@"%zd",_page + 1]
+                            };
+    
+    [[SCCNetworkTool sharedNetworkTool] requestCommentListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
+        if (error) {
+            [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
+            return ;
+        }
+        
+        if ([dict[@"state"] isEqualToString:@"success"]) {
+            
+            NSDictionary *dictData = dict[@"result"];
+            
+            _page  = _page + 1;
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            
+            [arrM addObjectsFromArray:_commentModelArr];
+            NSArray *newModelArr = [NSArray yy_modelArrayWithClass:[SCCArticleCommentModel class] json:dictData[@"discussList"]];
+            _commentModelArr = [arrM arrayByAddingObjectsFromArray:newModelArr];
+            
+            [self.tableView reloadData];
+            [footer endRefreshing];
+        }else{
+            [footer endRefreshingWithNoMoreData];
+        }
+        
+        
+    }];
+    
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     return 1;
@@ -81,8 +125,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     SCCMyCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.model = _commentModelArr[indexPath.row];
     cell.commentIconPath = _commentIconPath;
+    cell.model = _commentModelArr[indexPath.row];
     __weak typeof(self)weakSelf = self;
     [cell setCommentThumbsUpButtonClickBlock:^{
         __strong typeof(self)strongSelf = weakSelf;
@@ -144,6 +188,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         self.edgesForExtendedLayout = UIRectEdgeNone;//这个也很重要，不然view会被导航栏遮住的
         //注册cell
         [tableView registerClass:[SCCMyCommentTableViewCell class] forCellReuseIdentifier:CellID];
+        
+        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
         
 //        tableView.rowHeight = SCCWidth(79);
         tableView.rowHeight = UITableViewAutomaticDimension;

@@ -40,14 +40,15 @@
     }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.bgView).offset(SCCWidth(16));
+        make.top.equalTo(self.bgView).offset(SCCWidth(18));
         make.left.equalTo(self.bgView.mas_left).offset(SCCWidth(16));
         make.right.equalTo(self.bgView.mas_right).offset(SCCWidth(-16));
+        make.height.offset(SCCWidth(24));
     }];
 
     [self.userIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleLabel);
-        make.top.equalTo(self.titleLabel.mas_bottom).offset(SCCWidth(16));
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(SCCWidth(18));
         make.size.mas_equalTo(CGSizeMake(SCCWidth(36), SCCWidth(36)));
     }];
 
@@ -79,6 +80,24 @@
     [self.authorButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.userIconImageView);
     }];
+    
+//    UIView *view1 = [[UIView alloc]init];
+//    view1.backgroundColor = SCCRGBColor(0xf82601, 0.3);
+//    [self.contentView addSubview:view1];
+//
+//    [view1 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.bottom.equalTo(self.titleLabel);
+//        make.left.right.equalTo(self.contentView);
+//    }];
+//
+//    UIView *view2 = [[UIView alloc]init];
+//    view2.backgroundColor = SCCRGBColor(0xf82601, 0.3);
+//    [self.contentView addSubview:view2];
+//
+//    [view2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.bottom.equalTo(self.userIconImageView);
+//        make.left.right.equalTo(self.contentView);
+//    }];
 
     
     
@@ -86,6 +105,15 @@
 
 -(void)setModel:(SCCHomeViewModel *)model{
     _model = model;
+    
+    if (self.titleLabel.text.length > 13) {
+        [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.bgView).offset(SCCWidth(18));
+            make.left.equalTo(self.bgView.mas_left).offset(SCCWidth(16));
+            make.right.equalTo(self.bgView.mas_right).offset(SCCWidth(-16));
+            make.height.offset(SCCWidth(48));
+        }];
+    }
     
     self.titleLabel.text = model.article_title;
     [self.userIconImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.iconPath,model.head_portrait_url]] placeholderImage:[UIImage imageNamed:@"user_2"]];

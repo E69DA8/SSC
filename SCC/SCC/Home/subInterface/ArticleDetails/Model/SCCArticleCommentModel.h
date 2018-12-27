@@ -18,6 +18,7 @@
 @property(nonatomic,copy) NSString *userName;//用户名称
 @property(nonatomic,copy) NSString *userHead;//用户头像
 @property(nonatomic,copy) NSString *articleId;//文章id
-
+@property(nonatomic,assign) BOOL isThumbsUp;//是否点赞
+@property(nonatomic,copy) NSString *thumbsUpAmount;//评论点赞数
 
 @end
