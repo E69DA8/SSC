@@ -106,6 +106,8 @@
 -(void)setModel:(SCCHomeViewModel *)model{
     _model = model;
     
+    self.titleLabel.text = model.article_title;
+
     if (self.titleLabel.text.length > 13) {
         [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.bgView).offset(SCCWidth(18));
@@ -114,8 +116,15 @@
             make.height.offset(SCCWidth(48));
         }];
     }
+//    else{
+//        [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.bgView).offset(SCCWidth(18));
+//            make.left.equalTo(self.bgView.mas_left).offset(SCCWidth(16));
+//            make.right.equalTo(self.bgView.mas_right).offset(SCCWidth(-16));
+//            make.height.offset(SCCWidth(24));
+//        }];
+//    }
     
-    self.titleLabel.text = model.article_title;
     [self.userIconImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.iconPath,model.head_portrait_url]] placeholderImage:[UIImage imageNamed:@"user_2"]];
 //    NSLog(@"%@--------%@",self.iconPath,model.head_portrait_url);
     self.userNameLabel.text = model.author_name;
