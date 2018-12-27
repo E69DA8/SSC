@@ -67,7 +67,9 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
             [self.tableView reloadData];
             
         }else{
-            [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            if (!dict[@"message"]) {
+                [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            }
         }
     }];
 }
@@ -156,7 +158,9 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                     [self loadData];
                     
                 }else{
-                    [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+                    if (!dict[@"message"]) {
+                        [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+                    }
                 }
             }];
         }

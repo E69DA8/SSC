@@ -42,7 +42,9 @@
             [self.navigationController popViewControllerAnimated:YES];
             
         }else{
-            [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            if (!dict[@"message"]) {
+                [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            }
         }
     }];
     

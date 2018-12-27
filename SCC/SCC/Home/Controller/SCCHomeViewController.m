@@ -89,14 +89,16 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
             
             NSDictionary *dictData = dict[@"result"];
             
-            _listModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"bannerList"]];
+            _listModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"infoList"]];
             
             _iconPatn = dictData[@"path"];
             
             [self.tableView reloadData];
             
         }else{
-            [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            if (!dict[@"message"]) {
+                [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            }
         }
         
     }];
@@ -222,7 +224,9 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
                             [self loadData];
                             
                         }else{
-                            [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+                            if (!dict[@"message"]) {
+                                [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+                            }
                         }
                     }];
                 }else{

@@ -116,14 +116,14 @@
             make.height.offset(SCCWidth(48));
         }];
     }
-//    else{
-//        [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.bgView).offset(SCCWidth(18));
-//            make.left.equalTo(self.bgView.mas_left).offset(SCCWidth(16));
-//            make.right.equalTo(self.bgView.mas_right).offset(SCCWidth(-16));
-//            make.height.offset(SCCWidth(24));
-//        }];
-//    }
+    else{
+        [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.bgView).offset(SCCWidth(18));
+            make.left.equalTo(self.bgView.mas_left).offset(SCCWidth(16));
+            make.right.equalTo(self.bgView.mas_right).offset(SCCWidth(-16));
+            make.height.offset(SCCWidth(24));
+        }];
+    }
     
     [self.userIconImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.iconPath,model.head_portrait_url]] placeholderImage:[UIImage imageNamed:@"user_2"]];
 //    NSLog(@"%@--------%@",self.iconPath,model.head_portrait_url);

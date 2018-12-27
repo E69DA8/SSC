@@ -65,7 +65,9 @@ static NSString *CellID = @"SCCMyLikeTableViewCellID";
             [self.tableView reloadData];
             
         }else{
-            [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            if (!dict[@"message"]) {
+                [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            }
         }
         
         

@@ -160,7 +160,9 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
                     [self loadData];
                     
                 }else{
-                    [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+                    if (!dict[@"message"]) {
+                        [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+                    }
                 }
             }];
         }else{
@@ -211,7 +213,9 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
             [self.tableView reloadData];
             
         }else{
-            [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            if (!dict[@"message"]) {
+                [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
+            }
         }
         
     }];
