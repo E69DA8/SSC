@@ -25,7 +25,7 @@ static NSString *CellID = @"SCCMyLikeTableViewCellID";
 
 - (void)setupUI{
     
-    _page = 1;
+    
     
     self.view.backgroundColor = SCCBgColor;
 //    self.tableView.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height);
@@ -42,7 +42,7 @@ static NSString *CellID = @"SCCMyLikeTableViewCellID";
     [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 -(void)loadData{
-    
+    _page = 1;
     NSDictionary *param = @{
                             @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
                             @"pageNum" : @"1"
@@ -135,7 +135,8 @@ static NSString *CellID = @"SCCMyLikeTableViewCellID";
     SCCArticleDetailsViewController *detail = [[SCCArticleDetailsViewController alloc]init];
     detail.iconPath = _iconPatn;
     detail.articleId = _listModelArr[indexPath.row].articleId;
-    detail.isThumbsUp = _listModelArr[indexPath.row].isThumbsUp;
+    detail.isThumbsUp = 1;
+//    detail.isThumbsUp
     [self presentViewController:detail animated:YES completion:nil];
     
 }
@@ -156,6 +157,7 @@ static NSString *CellID = @"SCCMyLikeTableViewCellID";
         //注册cell
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID];
         tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        tableView.mj_footer.automaticallyHidden = YES;
         
         tableView.rowHeight = SCCWidth(300);
 //        tableView.rowHeight = UITableViewAutomaticDimension;

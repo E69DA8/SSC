@@ -44,7 +44,6 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 
 -(void)setupUI{
     
-    _page = 1;
     
 //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
@@ -65,6 +64,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 
 -(void)loadData{
     
+    _page = 1;
+    
     NSString *paramStr;
     
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID] integerValue] > 0) {
@@ -79,6 +80,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
                             };
     
     [[SCCNetworkTool sharedNetworkTool] requestArticleListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
+        
+        [self.tableView.mj_footer resetNoMoreData];
       
         if (error) {
             [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
@@ -94,6 +97,11 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
             _iconPatn = dictData[@"path"];
             
             [self.tableView reloadData];
+            
+//            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+//            self.tableView.mj_footer.state = MJRefreshStateIdle;
+//            [self.tableView.mj_footer resetNoMoreData];
+//            self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
             
         }else{
             if (!dict[@"message"]) {
@@ -280,6 +288,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
         //注册cell
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID];
         tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        
+        tableView.mj_footer.automaticallyHidden = YES;
 
         tableView.rowHeight = SCCWidth(300);
         //

@@ -34,17 +34,18 @@
 }
 
 - (void)goBack{
-    if([self.rankV canGoBack]){
-        [self.rankV goBack];
-        
-        self.navigationItem.leftBarButtonItems = @[
-                                                   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"return"] style:UIBarButtonItemStylePlain target:self action:@selector(goBack)],
-                                                   [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(closeNative)]
-                                                   ];
-        
-    }else{
-        [self closeNative];
-    }
+//    if([self.rankV canGoBack]){
+//        [self.rankV goBack];
+//
+//        self.navigationItem.leftBarButtonItems = @[
+//                                                   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"return"] style:UIBarButtonItemStylePlain target:self action:@selector(goBack)],
+//                                                   [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(closeNative)]
+//                                                   ];
+//
+//    }else{
+//        [self closeNative];
+//    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)closeNative{
@@ -58,7 +59,7 @@
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"return"] style:UIBarButtonItemStylePlain target:self action:@selector(goBack)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"exit_btn"] style:UIBarButtonItemStylePlain target:self action:@selector(goBack)];
     
     UIView *view = [[UIView alloc]init];
     view.backgroundColor = [UIColor r_colorWithHex:0xeeeeee];
@@ -81,11 +82,11 @@
     }
     
     
-    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(SCCWidth(40));
-        make.right.equalTo(self.view).offset(SCCWidth(-40));
-        make.size.mas_equalTo(CGSizeMake(SCCWidth(40), SCCWidth(40)));
-    }];
+//    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(SCCWidth(40));
+//        make.right.equalTo(self.view).offset(SCCWidth(-40));
+//        make.size.mas_equalTo(CGSizeMake(SCCWidth(40), SCCWidth(40)));
+//    }];
     
     
 }

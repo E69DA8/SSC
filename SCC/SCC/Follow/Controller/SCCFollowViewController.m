@@ -43,7 +43,7 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
 
 - (void)setupFoloowUI{
     
-    _page = 1;
+    
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
@@ -61,6 +61,9 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
     
     if (_type == 1) {
         self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        self.tableView.mj_footer.automaticallyHidden = YES;
+        self.tableView.mj_footer.hidden = YES;
+        self.tableView.mj_footer.alpha = 0;
     }
 }
 
@@ -116,6 +119,7 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
 }
 
 -(void)loadData{
+    _page = 1;
     NSDictionary *param = @{
                             @"userId": [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
                             @"pageNum" : @"1"
@@ -153,6 +157,7 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
 - (void)loadMoreData:(MJRefreshFooter *)footer{
     
     if (_type == 2) {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
         return;
     }
     

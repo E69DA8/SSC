@@ -62,6 +62,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     
     [self.commentTextField addTarget:self action:@selector(textField1TextChange:) forControlEvents:UIControlEventEditingChanged];
 
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     
     [self loadData];
     
@@ -71,6 +72,11 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+}
+
+//隐藏状态栏
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 //- (void)viewWillDisappear:(BOOL)animated {
@@ -105,7 +111,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     
 //    _isFabulous = self.isThumbsUp;
     
-    _page = 1;
+    
     _refreshType = 1;
     
     [self loadCommentData:1];
@@ -118,8 +124,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
     effectView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
-    
-    self.tableView.frame = CGRectMake(0,TopStatusHeight, self.view.bounds.size.width, self.view.bounds.size.height);
+    //TopStatusHeight
+    self.tableView.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height);
     
 //    self.view.backgroundColor = [UIColor whiteColor];
     
@@ -167,6 +173,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 
 -(void)loadData{
 //
+    
     NSDictionary *param = @{
                             @"articleId" : self.articleId
                             };
@@ -205,6 +212,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 }
 
 - (void)loadCommentData:(NSInteger)type{
+    
+    _page = 1;
     
     NSDictionary *param = @{
                             @"userId" : @"-1",
@@ -284,6 +293,9 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     }];
     
 }
+
+
+
 
 
 
@@ -597,6 +609,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         [tableView registerClass:[SCCArticleDetailsHeaderTableViewCell class] forCellReuseIdentifier:headerCellID];
         
         tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        tableView.mj_footer.automaticallyHidden = YES;
         
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = SCCWidth(79);

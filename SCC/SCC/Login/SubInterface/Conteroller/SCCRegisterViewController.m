@@ -28,9 +28,11 @@
 - (void)protocolButtonClick{
     JYHLUserAgreementWebViewController *concealVC = [[JYHLUserAgreementWebViewController alloc]init];
     
+    SCCBaseNavigationController *nav = [[SCCBaseNavigationController alloc] initWithRootViewController:concealVC];
     concealVC.title = @"服务条款";
     concealVC.urlStr = @"http://lookroe.com/yhxy.html";
-    [self presentViewController:concealVC animated:YES completion:nil];
+//    concealVC.navigationItem.leftBarButtonItem
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 -(void)registerButtonClick{

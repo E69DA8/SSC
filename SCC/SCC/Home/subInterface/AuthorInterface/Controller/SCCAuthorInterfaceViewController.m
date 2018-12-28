@@ -39,7 +39,7 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
 
 -(void)setupUI{
     
-    _page = 1;
+    
     
     [self loadData];
     
@@ -176,6 +176,7 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
 
 
 - (void)loadData{
+    _page = 1;
     
     NSDictionary *param = @{
                             @"autherId" : self.autherId,
@@ -318,7 +319,7 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
         //注册cell
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID];
         tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
-        
+        tableView.mj_footer.automaticallyHidden = YES;
         
         tableView.rowHeight = SCCWidth(300);
         //

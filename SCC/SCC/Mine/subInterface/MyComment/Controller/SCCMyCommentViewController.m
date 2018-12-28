@@ -26,7 +26,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 
 - (void)setupUI{
     
-    _page = 1;
+    
     
     self.tableView.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height);
     
@@ -44,6 +44,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 //}
 
 -(void)loadData{
+    _page = 1;
     NSDictionary *param = @{
                             @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
                             @"articleId" :@"-1",
@@ -194,6 +195,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         [tableView registerClass:[SCCMyCommentTableViewCell class] forCellReuseIdentifier:CellID];
         
         tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        tableView.mj_footer.automaticallyHidden = YES;
         
 //        tableView.rowHeight = SCCWidth(79);
         tableView.rowHeight = UITableViewAutomaticDimension;
