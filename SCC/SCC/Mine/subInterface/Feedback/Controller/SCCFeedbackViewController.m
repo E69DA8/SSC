@@ -8,8 +8,9 @@
 
 #import "SCCFeedbackViewController.h"
 
-@interface SCCFeedbackViewController ()<UITextFieldDelegate>
+@interface SCCFeedbackViewController ()<UITextViewDelegate>
 @property(weak,nonatomic)UITextView *feedbackTxt;//评论
+@property(weak,nonatomic)UILabel *hintTextLabel;
 @end
 
 @implementation SCCFeedbackViewController
@@ -50,6 +51,17 @@
     
 }
 
+
+- (void)textViewDidChange:(UITextView *)textView{
+    if (textView.text.length > 0) {
+        self.hintTextLabel.hidden = YES;
+    }else{
+        self.hintTextLabel.hidden = NO;
+    }
+}
+
+
+
 -(void)setupUI{
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(submissionFeedbackClick)];
@@ -64,6 +76,14 @@
     }];
     
     [self.feedbackTxt becomeFirstResponder];
+    
+    [self.hintTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(SCCWidth(18));
+        make.left.equalTo(self.view).offset(SCCWidth(30));
+//        make.width.offset(100);
+//        make.left.top.equalTo(self.feedbackTxt);
+    }];
+    
 }
 
 - (UITextView *)feedbackTxt{
@@ -87,7 +107,7 @@
 //        field1.borderStyle = UITextBorderStyleNone;
         [field1 setValue:[UIColor r_colorWithHex:0x939393] forKeyPath:@"_placeholderLabel.textColor"];//修改颜色
         [field1 setValue:[UIFont systemFontOfSize:15] forKeyPath:@"_placeholderLabel.font"];
-//        field1.delegate = self;
+        field1.delegate = self;
 //        field1.layer.borderWidth = 0.5;
 //        field1.layer.borderColor = [UIColor r_colorWithHex:0xd4d4d4].CGColor;
         field1.returnKeyType = UIReturnKeyDone;
@@ -98,6 +118,18 @@
         _feedbackTxt = field1;
     }
     return _feedbackTxt;
+}
+
+
+
+- (UILabel *)hintTextLabel{
+    if(!_hintTextLabel){
+        UILabel *lab = [UILabel r_labelWithText:@"请输入您的意见。。。" fontSize:15 color:[UIColor r_colorWithHex:0x939393]];
+//        lab.backgroundColor = [UIColor redColor];
+        [self.view addSubview:lab];
+        _hintTextLabel = lab;
+    }
+    return _hintTextLabel;
 }
 
 @end

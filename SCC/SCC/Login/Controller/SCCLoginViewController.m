@@ -64,9 +64,9 @@
             }];
             
         }else{
-            if (!dict[@"message"]) {
+//            if (!dict[@"message"]) {
                 [JYHLSVProgressHUD showWithMsg:dict[@"message"]];
-            }
+//            }
         }
     }];
 }

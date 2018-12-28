@@ -108,7 +108,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     _page = 1;
     _refreshType = 1;
     
-    [self loadCommentData];
+    [self loadCommentData:1];
     
     [MobClick event:@"article_details"];
     
@@ -204,7 +204,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     }];
 }
 
-- (void)loadCommentData{
+- (void)loadCommentData:(NSInteger)type{
     
     NSDictionary *param = @{
                             @"userId" : @"-1",
@@ -228,7 +228,14 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
             
             _commentIconPath = dictData[@"path"];
             
-            [self.tableView reloadData];
+            if (type == 1) {
+                [self.tableView reloadData];
+            }else if(type == 3){
+                [self.tableView reloadData];
+                NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:_commentModelArr.count > 0 ? 1 : 0 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
+            
             
         }else{
             if (!dict[@"message"]) {
@@ -385,8 +392,8 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                         //
                         //                        [self.tableView reloadData];
                         
-                        [JYHLSVProgressHUD showWithMsg:@"点赞成功"];
-                        [self loadCommentData];
+//                        [JYHLSVProgressHUD showWithMsg:@"评论点赞成功"];
+                        [self loadCommentData:2];
                         
                     }else{
                         if (!dict[@"message"]) {
@@ -492,10 +499,9 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
             [JYHLSVProgressHUD showWithMsg:@"评论成功"];
             
             
-            [self loadCommentData];
+           
             
-            NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:_commentModelArr.count > 0 ? 1 : 0 inSection:0];
-            [self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            [self loadCommentData:3];
             
         }else{
             if (!dict[@"message"]) {

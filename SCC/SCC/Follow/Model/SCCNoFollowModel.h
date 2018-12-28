@@ -14,5 +14,6 @@
 @property(nonatomic,copy) NSString *head_portrait_url;//头像
 @property(nonatomic,copy) NSString *brief_introduction;//作者介绍
 @property(nonatomic,copy) NSString *author_name;//作者名字
+@property(nonatomic,assign) NSInteger isThumbsUp;//是否点赞
 
 @end

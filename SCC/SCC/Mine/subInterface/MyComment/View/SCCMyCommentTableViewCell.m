@@ -22,7 +22,10 @@
 
 @end
 
-@implementation SCCMyCommentTableViewCell
+@implementation SCCMyCommentTableViewCell{
+    BOOL _commentType;
+    NSInteger _commentNum;
+}
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -86,6 +89,19 @@
  * 评论点赞
  */
 -(void)commentThumbsUpButtonClick{
+    
+    if (!_commentType) {
+        self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_sel_discuss"];
+        self.fabulousLabel.text = [NSString stringWithFormat:@"%zd",_commentNum + 1];
+        _commentNum = _commentNum + 1;
+    }else{
+        self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_discuss"];
+        self.fabulousLabel.text = [NSString stringWithFormat:@"%zd",_commentNum - 1];
+        _commentNum = _commentNum - 1;
+    }
+    
+    _commentType = !_commentType;
+    
     if (self.commentThumbsUpButtonClickBlock) {
         self.commentThumbsUpButtonClickBlock();
     }
@@ -106,6 +122,9 @@
     }else{
         self.fabulousImageView.image = [UIImage imageNamed:@"btn_article_detail_discuss"];
     }
+    
+    _commentType = model.isThumbsUp;
+    _commentNum = [model.thumbsUpAmount integerValue];
     
     self.fabulousLabel.text = model.thumbsUpAmount;
     self.articleTextLabel.text = [model.discuss_content stringByReplacingOccurrencesOfString:@" " withString:@""];

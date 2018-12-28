@@ -135,7 +135,7 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
             NSDictionary *param = @{
                                     @"authorId" : self.autherId,
                                     @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
-                                    @"remark": @(!self.isThumbsUp)
+                                    @"remark": @(!self.isFollow)
                                     };
             [[SCCNetworkTool sharedNetworkTool] requestFollowWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
                 if (error) {
@@ -155,7 +155,7 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
                     
 //                    [JYHLSVProgressHUD showWithMsg:@"关注成功"];
                     
-                    self.isThumbsUp = !self.isThumbsUp;
+                    self.isFollow = !self.isFollow;
                     
                     [self loadData];
                     
@@ -202,9 +202,9 @@ static NSString *CellID = @"SCCAuthorInterfaceViewControllerCellID";
             
             self.headerView.iconPatn = _iconPatn;
             self.headerView.model = _listModelArr[0];
-            self.headerView.isFollow = self.isThumbsUp;
+            self.headerView.isFollow = self.isFollow;
             
-            if (self.isThumbsUp) {
+            if (self.isFollow) {
                 [self.followButton setImage:[UIImage imageNamed:@"btn_already_follow"] forState:UIControlStateNormal];
             }else{
                 [self.followButton setImage:[UIImage imageNamed:@"btn_follow"] forState:UIControlStateNormal];

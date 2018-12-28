@@ -255,7 +255,10 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
                 
                 if (type == 2) {
                     SCCAuthorInterfaceViewController *view = [[SCCAuthorInterfaceViewController alloc]init];
-                    view.autherId = _listModelArr[indexPath.row].autherId;
+                    view.autherId = _followListModelArr[indexPath.row].autherId;
+                    view.isFollow = _followListModelArr[indexPath.row].is_follow;
+                    
+                    NSLog(@"%@-------%zd",_listModelArr[indexPath.row].autherId,_listModelArr[indexPath.row].is_follow);
                     [strongSelf.navigationController pushViewController:view animated:YES];
                 }else if (type == 1){
                     
@@ -400,6 +403,9 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
         
         detail.iconPath = _iconPatn;
         detail.articleId = _followListModelArr[indexPath.row].articleId;
+        detail.isThumbsUp = _followListModelArr[indexPath.row].isThumbsUp;
+        detail.isFollow = _followListModelArr[indexPath.row].is_follow;
+        NSLog(@"%zd",_listModelArr[indexPath.row].is_follow);
         [self presentViewController:detail animated:YES completion:nil];
     }
     

@@ -141,7 +141,7 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
             NSMutableArray *arrM = [NSMutableArray array];
             
             [arrM addObjectsFromArray:_listModelArr];
-            NSArray *newModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"bannerList"]];
+            NSArray *newModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"infoList"]];
             _listModelArr = [arrM arrayByAddingObjectsFromArray:newModelArr];
             
             [self.tableView reloadData];
@@ -188,7 +188,7 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
             if (type == 2) {
                 SCCAuthorInterfaceViewController *view = [[SCCAuthorInterfaceViewController alloc]init];
                 view.autherId = _listModelArr[indexPath.row].autherId;
-                view.isThumbsUp = _listModelArr[indexPath.row].isThumbsUp;
+                view.isFollow = _listModelArr[indexPath.row].is_follow;
                 [strongSelf.navigationController pushViewController:view animated:YES];
             }else if (type == 1){
                 

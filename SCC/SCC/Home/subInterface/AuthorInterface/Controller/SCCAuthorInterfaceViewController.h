@@ -10,6 +10,6 @@
 
 @interface SCCAuthorInterfaceViewController : SCCBaseViewController
 @property(nonatomic,copy) NSString *autherId;//作者id
-@property(nonatomic,assign) BOOL isThumbsUp;//是否点赞
+@property(nonatomic,assign) BOOL isFollow;//是否关注
 
 @end
