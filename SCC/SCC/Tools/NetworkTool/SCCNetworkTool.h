@@ -116,4 +116,8 @@ typedef enum: NSInteger{
  */
 - (void)requestSuggestionBackWithParam:(NSDictionary *)param CallBack:(void (^)(NSDictionary *dict, NSError *error))callBack;
 
+/*
+ * 视频接口
+ */
+- (void)requestVideoListCallBack:(void (^)(NSDictionary *dict, NSError *error))callBack;
 @end

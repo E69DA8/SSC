@@ -16,6 +16,7 @@
 @property(weak,nonatomic)UILabel *articleTextLavel;//正文
 @property(weak,nonatomic)UIButton *followButton;//关注按钮
 @property(weak,nonatomic)UIButton *authorButton;
+//@property(weak,nonatomic)UIView *bgView;
 
 @end
 

@@ -10,6 +10,7 @@
 #import "KLTNavigationController.h"
 #import "SCCBaseNavigationController.h"
 #import "SCCLoginViewController.h"
+#import "SCCVideoViewController.h"
 
 @interface SCCMainTabBarViewController ()
 
@@ -23,7 +24,9 @@
     // Do any additional setup after loading the view.
     [self childVCWithClassName:@"SCCHomeViewController" title:@"首页" imageName:@"btn_tabbar_home"];
     [self childVCWithClassName:@"SCCFollowViewController" title:@"关注" imageName:@"btn_tabbar_follow"];
+    [self childVCWithClassName:@"SCCVideoViewController" title:@"视频" imageName:@"btn_tabbarl_video"];
     [self childVCWithClassName:@"SCCMainViewController" title:@"我的" imageName:@"btn_tabbar_my"];
+    
 }
 
 - (void)childVCWithClassName:(NSString *)className title:(NSString *)title imageName:(NSString *)imageName{

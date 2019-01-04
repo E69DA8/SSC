@@ -457,6 +457,18 @@ static NSMutableDictionary *articleDict;
     [self requestWithType:POST urlStr:urlStr parameters:param callBack:callBack];
 }
 
+/*
+ * 视频接口
+ */
+- (void)requestVideoListCallBack:(void (^)(NSDictionary *dict, NSError *error))callBack{
+    
+    //    NSString *deviceId = [SSKeychain passwordForService:[NSBundle mainBundle].bundleIdentifier account:JYHLSaveDeviceIdKey];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"%@yxbApp/queryVideoList.do",SCCBASEURL];
+    
+    [self requestWithType:POST urlStr:urlStr parameters:nil callBack:callBack];
+}
+
 
 
 

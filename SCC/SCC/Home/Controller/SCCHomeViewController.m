@@ -18,6 +18,7 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 @interface SCCHomeViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(strong,nonatomic)SCCHomeHeaderView *headerView;//headerView
+//@property(weak,nonatomic) UITableView *tableView;//tableView
 
 @end
 

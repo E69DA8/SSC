@@ -45,6 +45,10 @@
 		A472062421B2BD05002CAFC7 /* JYHLSVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A472062321B2BD05002CAFC7 /* JYHLSVProgressHUD.m */; };
 		A4790DD9219588B500C277A3 /* AFHTTPSessionManager+JYHLHttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A4790DD7219588B500C277A3 /* AFHTTPSessionManager+JYHLHttpManager.m */; };
 		A4790DDC2195897F00C277A3 /* SCCNetworkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A4790DDA2195897F00C277A3 /* SCCNetworkTool.m */; };
+		A49B476721DF82AE0081A8E6 /* SCCVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A49B476621DF82AE0081A8E6 /* SCCVideoViewController.m */; };
+		A49B476A21DF85D80081A8E6 /* SCCVideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A49B476921DF85D80081A8E6 /* SCCVideoTableViewCell.m */; };
+		A49B476D21DF90030081A8E6 /* SCCVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A49B476C21DF90030081A8E6 /* SCCVideoModel.m */; };
+		A49B477021DF96330081A8E6 /* SCCVideoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A49B476F21DF96330081A8E6 /* SCCVideoPlayViewController.m */; };
 		A4A5F0A42181516D0024EC97 /* SCCHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A5F0A32181516D0024EC97 /* SCCHomeTableViewCell.m */; };
 		A4A5F0A7218151E60024EC97 /* SCCHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A5F0A6218151E60024EC97 /* SCCHomeHeaderView.m */; };
 		A4A5F0D82181542D0024EC97 /* UIViewController+RYLAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A5F0A92181542C0024EC97 /* UIViewController+RYLAddition.m */; };
@@ -163,6 +167,14 @@
 		A4790DD8219588B500C277A3 /* AFHTTPSessionManager+JYHLHttpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPSessionManager+JYHLHttpManager.h"; sourceTree = "<group>"; };
 		A4790DDA2195897F00C277A3 /* SCCNetworkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCNetworkTool.m; sourceTree = "<group>"; };
 		A4790DDB2195897F00C277A3 /* SCCNetworkTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCNetworkTool.h; sourceTree = "<group>"; };
+		A49B476521DF82AE0081A8E6 /* SCCVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCVideoViewController.h; sourceTree = "<group>"; };
+		A49B476621DF82AE0081A8E6 /* SCCVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCVideoViewController.m; sourceTree = "<group>"; };
+		A49B476821DF85D80081A8E6 /* SCCVideoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCVideoTableViewCell.h; sourceTree = "<group>"; };
+		A49B476921DF85D80081A8E6 /* SCCVideoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCVideoTableViewCell.m; sourceTree = "<group>"; };
+		A49B476B21DF90030081A8E6 /* SCCVideoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCVideoModel.h; sourceTree = "<group>"; };
+		A49B476C21DF90030081A8E6 /* SCCVideoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCVideoModel.m; sourceTree = "<group>"; };
+		A49B476E21DF96330081A8E6 /* SCCVideoPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCVideoPlayViewController.h; sourceTree = "<group>"; };
+		A49B476F21DF96330081A8E6 /* SCCVideoPlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCVideoPlayViewController.m; sourceTree = "<group>"; };
 		A4A5F0A22181516D0024EC97 /* SCCHomeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCHomeTableViewCell.h; sourceTree = "<group>"; };
 		A4A5F0A32181516D0024EC97 /* SCCHomeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCHomeTableViewCell.m; sourceTree = "<group>"; };
 		A4A5F0A5218151E60024EC97 /* SCCHomeHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCHomeHeaderView.h; sourceTree = "<group>"; };
@@ -452,6 +464,7 @@
 				A42702B0217EC60800C65D2B /* Main */,
 				A42702AC217EC1C500C65D2B /* Home */,
 				A426FA112181AA1A003A1B6A /* Follow */,
+				A49B476121DF827C0081A8E6 /* Video */,
 				A426FA1B2181CAA3003A1B6A /* Mine */,
 				A40D2BE721B11ABE00341DFA /* Login */,
 				A465557B218440D40060DFE1 /* Assets.xcassets */,
@@ -751,6 +764,45 @@
 			path = NetworkTool;
 			sourceTree = "<group>";
 		};
+		A49B476121DF827C0081A8E6 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				A49B476221DF827C0081A8E6 /* controller */,
+				A49B476321DF827C0081A8E6 /* model */,
+				A49B476421DF827C0081A8E6 /* view */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		A49B476221DF827C0081A8E6 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				A49B476521DF82AE0081A8E6 /* SCCVideoViewController.h */,
+				A49B476621DF82AE0081A8E6 /* SCCVideoViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		A49B476321DF827C0081A8E6 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A49B476B21DF90030081A8E6 /* SCCVideoModel.h */,
+				A49B476C21DF90030081A8E6 /* SCCVideoModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		A49B476421DF827C0081A8E6 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				A49B476821DF85D80081A8E6 /* SCCVideoTableViewCell.h */,
+				A49B476921DF85D80081A8E6 /* SCCVideoTableViewCell.m */,
+				A49B476E21DF96330081A8E6 /* SCCVideoPlayViewController.h */,
+				A49B476F21DF96330081A8E6 /* SCCVideoPlayViewController.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		A4A5F0A82181542C0024EC97 /* Additions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1040,12 +1092,14 @@
 				A45DCC182182DDDF009E15B8 /* SCCMyCommentViewController.m in Sources */,
 				A42702A6217EBC5600C65D2B /* main.m in Sources */,
 				A42702CC217EF90D00C65D2B /* SCCBaseControl.m in Sources */,
+				A49B476A21DF85D80081A8E6 /* SCCVideoTableViewCell.m in Sources */,
 				A4A5F0DE2181542D0024EC97 /* UIScreen+RYLAddition.m in Sources */,
 				A4A5F0D82181542D0024EC97 /* UIViewController+RYLAddition.m in Sources */,
 				A4A5F0DA2181542D0024EC97 /* UINavigationBar+Background.m in Sources */,
 				A4655574218409DD0060DFE1 /* SCCFunctionButtonView.m in Sources */,
 				A4E40B0121A0EEB600F2C0EC /* SCCMyLikeViewController.m in Sources */,
 				A42702C8217EF90C00C65D2B /* BaseObject.m in Sources */,
+				A49B477021DF96330081A8E6 /* SCCVideoPlayViewController.m in Sources */,
 				A4A5F0E22181542D0024EC97 /* NSObject+GetVC.m in Sources */,
 				A4655570218401E70060DFE1 /* SCCArticleDetailsViewController.m in Sources */,
 				A40D2BE121B0CDBB00341DFA /* SCCSharePresentC.m in Sources */,
@@ -1080,6 +1134,7 @@
 				A40BA32B2186EE7E000949DF /* SCCArticleDetailsHeaderTableViewCell.m in Sources */,
 				A44E00CE21B3EF76003C6EF5 /* JYHLBasePresentViewController.m in Sources */,
 				A452D0032192BDA7007762F0 /* SCCAuthorInterfaceHeaderView.m in Sources */,
+				A49B476721DF82AE0081A8E6 /* SCCVideoViewController.m in Sources */,
 				A42702CB217EF90D00C65D2B /* SCCBaseView.m in Sources */,
 				A4A5F0DD2181542D0024EC97 /* NSDate+RYLCompareDate.m in Sources */,
 				A4A5F0EB2181542D0024EC97 /* NSArray+Log.m in Sources */,
@@ -1100,6 +1155,7 @@
 				A4A5F0E92181542D0024EC97 /* NSString+path.m in Sources */,
 				A44E00CB21B3EF48003C6EF5 /* JYHLBaseWebViewController.m in Sources */,
 				A42702B4217EC6E600C65D2B /* SCCBaseTabBarViewController.m in Sources */,
+				A49B476D21DF90030081A8E6 /* SCCVideoModel.m in Sources */,
 				A4A5F0A7218151E60024EC97 /* SCCHomeHeaderView.m in Sources */,
 				A4A5F0E72181542D0024EC97 /* NSObject+Coder.m in Sources */,
 				A4A5F0D92181542D0024EC97 /* NSArray+RYLAddition.m in Sources */,
@@ -1247,7 +1303,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lookroe.SCC.l;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1267,7 +1323,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lookroe.SCC.l;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
