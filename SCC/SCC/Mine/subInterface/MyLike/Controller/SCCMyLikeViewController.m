@@ -156,7 +156,7 @@ static NSString *CellID = @"SCCMyLikeTableViewCellID";
         self.edgesForExtendedLayout = UIRectEdgeNone;//这个也很重要，不然view会被导航栏遮住的
         //注册cell
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID];
-        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
         tableView.mj_footer.automaticallyHidden = YES;
         
         tableView.rowHeight = SCCWidth(300);

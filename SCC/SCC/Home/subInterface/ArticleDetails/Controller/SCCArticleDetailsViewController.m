@@ -52,6 +52,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
     NSInteger _page;
 //    BOOL _isFabulous;
     NSInteger _refreshType;
+    NSInteger _fabulousNum;
 }
 
 
@@ -195,7 +196,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
             self.functionButtonView.fabulousStr = _listModelArr[0].article_like_amount;
             self.functionButtonView.retransmissStr = _listModelArr[0].forwarding_num;
             self.functionButtonView.CommentStr = _listModelArr[0].discuss_like_mount;
-            
+            _fabulousNum = [_listModelArr[0].article_like_amount integerValue];
             if (_refreshType == 1) {
              self.functionButtonView.isThumbsUp = self.isThumbsUp;
             }
@@ -608,7 +609,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         
         [tableView registerClass:[SCCArticleDetailsHeaderTableViewCell class] forCellReuseIdentifier:headerCellID];
         
-        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
         tableView.mj_footer.automaticallyHidden = YES;
         
         tableView.rowHeight = UITableViewAutomaticDimension;
@@ -644,12 +645,18 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
                     
                     if ([[[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID] integerValue] > 0) {
                     
+//                        self.functionButtonView.userInteractionEnabled = NO;
+                        
+                        self.functionButtonView.fabulousButton.userInteractionEnabled = NO;
+                        
                     NSDictionary *param = @{
                                             @"articleId" : _listModelArr[0].articleId,
                                             @"userId" : [[NSUserDefaults standardUserDefaults] objectForKey:SCCUserID],
                                             @"remark" : @(!self.isThumbsUp)
                                             };
                     [[SCCNetworkTool sharedNetworkTool]requestThumbsUpWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
+                        
+                        self.functionButtonView.fabulousButton.userInteractionEnabled = YES;
                         
                         if (error) {
                             [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
@@ -669,7 +676,18 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
 //                            [JYHLSVProgressHUD showWithMsg:@"点赞成功"];
                             self.isThumbsUp = !self.isThumbsUp;
                             _refreshType = 1;
-                            [self loadData];
+//                            [self loadData];
+                            
+                            if (self.isThumbsUp) {
+                                _fabulousNum  = _fabulousNum + 1;
+                            }else{
+                                _fabulousNum  = _fabulousNum - 1;
+                            }
+                            self.functionButtonView.fabulousStr = [NSString stringWithFormat:@"%zd",_fabulousNum];
+                            self.functionButtonView.isThumbsUp = self.isThumbsUp;
+                            
+                            
+                            
                             
                         }else{
                             if (!dict[@"message"]) {

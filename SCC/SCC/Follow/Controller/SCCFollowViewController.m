@@ -34,6 +34,8 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
     NSString *_iconPatn;//头像前缀
     NSInteger _type ;//1:有关注，2：没有关注
     NSInteger _page;
+    
+    NSInteger _current;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -60,7 +62,7 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
     self.headerView.titleStr = @"关注";
     
     if (_type == 1) {
-        self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
         self.tableView.mj_footer.automaticallyHidden = YES;
         self.tableView.mj_footer.hidden = YES;
         self.tableView.mj_footer.alpha = 0;
@@ -141,6 +143,16 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
             _iconPatn = dictData[@"path"];
             
             [self.tableView reloadData];
+            
+            NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:_current inSection:0];
+            [self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+//            if(_current){
+//
+//                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_current inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//            }else{
+//                [self.tableView reloadData];
+//
+//            }
             
         }else{
             if (!dict[@"message"]) {
@@ -410,7 +422,8 @@ static NSString *CellID2 = @"SCCHomeTableViewCellID2";
         detail.articleId = _followListModelArr[indexPath.row].articleId;
         detail.isThumbsUp = _followListModelArr[indexPath.row].isThumbsUp;
         detail.isFollow = _followListModelArr[indexPath.row].is_follow;
-        NSLog(@"%zd",_listModelArr[indexPath.row].is_follow);
+//        NSLog(@"%zd",_listModelArr[indexPath.row].is_follow);
+        _current = indexPath.row;
         [self presentViewController:detail animated:YES completion:nil];
     }
     

@@ -23,6 +23,7 @@ static NSString *CellID = @"SCCVideoTableViewCellID";
 @implementation SCCVideoViewController{
     NSArray<SCCVideoModel *> *_modelListArr;
     NSString *_iconPatn;
+    NSString *_pictruePatn;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -45,6 +46,7 @@ static NSString *CellID = @"SCCVideoTableViewCellID";
             _modelListArr = [NSArray yy_modelArrayWithClass:[SCCVideoModel class] json:dictData[@"infoList"]];
             
             _iconPatn = dictData[@"path"];
+            _pictruePatn = dictData[@"pictruepath"];
             
             [self.tableView reloadData];
             
@@ -93,7 +95,7 @@ static NSString *CellID = @"SCCVideoTableViewCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     SCCVideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.iconPath = _iconPatn;
+    cell.iconPath = _pictruePatn;
     cell.model = _modelListArr[indexPath.row];
     return cell;
 }

@@ -9,5 +9,5 @@
 #import "SCCBaseViewController.h"
 
 @interface SCCHomeViewController : SCCBaseViewController
-@property(weak,nonatomic) UITableView *tableView;//tableView
+
 @end

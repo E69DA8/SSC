@@ -194,7 +194,7 @@ static NSString *CellID = @"SCCMyCommentTableViewCellID";
         //注册cell
         [tableView registerClass:[SCCMyCommentTableViewCell class] forCellReuseIdentifier:CellID];
         
-        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
         tableView.mj_footer.automaticallyHidden = YES;
         
 //        tableView.rowHeight = SCCWidth(79);

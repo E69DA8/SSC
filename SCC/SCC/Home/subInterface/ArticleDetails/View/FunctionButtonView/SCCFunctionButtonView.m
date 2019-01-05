@@ -7,10 +7,9 @@
 //
 
 #import "SCCFunctionButtonView.h"
-#import "SYFavoriteButton.h"
 
 @interface SCCFunctionButtonView()
-@property(weak,nonatomic)SYFavoriteButton *fabulousButton;//赞
+
 @property(weak,nonatomic)UILabel *fabulousLabel;
 //@property(weak,nonatomic)UIButton *fabulousButton;
 @property(weak,nonatomic)UIView *fabulousBgView;

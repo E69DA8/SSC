@@ -7,6 +7,7 @@
 //
 
 #import "SCCBaseView.h"
+#import "SYFavoriteButton.h"
 
 @interface SCCFunctionButtonView : SCCBaseView
 @property(nonatomic,copy) void (^functionButtonClickBlock)(NSInteger type);//功能按钮回调
@@ -14,4 +15,5 @@
 @property(nonatomic,copy) NSString *retransmissStr;//转发数
 @property(nonatomic,copy) NSString *CommentStr;//评论数
 @property(nonatomic,assign) BOOL isThumbsUp;//是否点赞
+@property(weak,nonatomic)SYFavoriteButton *fabulousButton;//赞
 @end

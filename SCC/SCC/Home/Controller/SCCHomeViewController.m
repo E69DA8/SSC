@@ -19,7 +19,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 
 @property(strong,nonatomic)SCCHomeHeaderView *headerView;//headerView
 //@property(weak,nonatomic) UITableView *tableView;//tableView
-
+//@property(weak,readwrite,nonatomic)UITableView *tableView;
+@property(weak,nonatomic) UITableView *tableView;//tableView
 @end
 
 @implementation SCCHomeViewController{
@@ -27,12 +28,16 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
     NSArray<SCCHomeViewModel *> *_listModelArr;
     NSString *_iconPatn;
     NSInteger _page;
+    
+    NSInteger _current;
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [self loadData];
+    
     [MobClick event:@"article_list"];
 //    self.tabBarController.tabBar.hidden = YES;
 }
@@ -40,10 +45,12 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
 //    self.tabBarController.tabBar.hidden = NO;
+    [self loadData];
 }
 
 
 -(void)setupUI{
+    
     
     
 //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
@@ -82,7 +89,7 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
     
     [[SCCNetworkTool sharedNetworkTool] requestArticleListWithParam:param CallBack:^(NSDictionary *dict, NSError *error) {
         
-        [self.tableView.mj_footer resetNoMoreData];
+//        [self.tableView.mj_footer resetNoMoreData];
       
         if (error) {
             [JYHLSVProgressHUD showWithMsg:error.localizedDescription];
@@ -92,12 +99,20 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
         if ([dict[@"state"] isEqualToString:@"success"]) {
             
             NSDictionary *dictData = dict[@"result"];
-            
+//            _listModelArr = nil;
             _listModelArr = [NSArray yy_modelArrayWithClass:[SCCHomeViewModel class] json:dictData[@"infoList"]];
             
             _iconPatn = dictData[@"path"];
             
-            [self.tableView reloadData];
+            if(_current){
+                
+                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_current inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            }else{
+                [self.tableView reloadData];
+                
+            }
+            
+
             
 //            [self.tableView.mj_footer endRefreshingWithNoMoreData];
 //            self.tableView.mj_footer.state = MJRefreshStateIdle;
@@ -264,6 +279,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
 //    detail.titleTwo = self.titleTwos[indexPath.row];
 //    detail.content = self.contents[indexPath.row];
 //    detail.imageName = self.dataSource[indexPath.row];
+
+    _current = indexPath.row;
     detail.iconPath = _iconPatn;
     detail.articleId = _listModelArr[indexPath.row].articleId;
     detail.isThumbsUp = _listModelArr[indexPath.row].isThumbsUp;
@@ -288,7 +305,8 @@ static NSString *CellID = @"SCCHomeTableViewCellID";
         self.edgesForExtendedLayout = UIRectEdgeNone;//这个也很重要，不然view会被导航栏遮住的
         //注册cell
         [tableView registerClass:[SCCHomeTableViewCell class] forCellReuseIdentifier:CellID];
-        tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
+        
+        tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData:)];
         
         tableView.mj_footer.automaticallyHidden = YES;
 
